@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GPS 打卡表單</title>
+</head>
+<body>
+  <h2>打卡中...</h2>
+  <p id="status">正在取得 GPS 位置...</p>
+
+  <script>
+    // 修改為你表單的對應欄位 Entry ID
+    const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSerjSuXrCvdZVl_rf6THqccZoXSxxmj3Rsuqw1lLVsK19YNCA/viewform";
+    // const NAME_ENTRY = "entry.123456789";
+    const TYPE_ENTRY = "entry.1939967371";
+    const LOCATION_ENTRY = "entry.1456594784";
+
+    // 可寫死，也可加入輸入欄位
+    // const employeeName = "張三";
+    const punchType = "上班"; // 或 "下班"
+
+    function sendForm(lat, lng) {
+      const formData = new FormData();
+      // formData.append(NAME_ENTRY, employeeName);
+      formData.append(TYPE_ENTRY, punchType);
+      formData.append(LOCATION_ENTRY, `${lat},${lng}`);
+
+      fetch(FORM_URL, {
+        method: "POST",
+        mode: "no-cors", // 重要：避免 CORS 問題
+        body: formData
+      }).then(() => {
+        document.getElementById("status").innerText = "打卡成功 ✅";
+      }).catch(() => {
+        document.getElementById("status").innerText = "打卡失敗 ❌";
+      });
+    }
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      sendForm(lat, lng);
+    }, function(error) {
+      document.getElementById("status").innerText = "無法取得 GPS 位置";
+    });
+  </script>
+</body>
+</html>
