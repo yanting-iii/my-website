@@ -15,12 +15,12 @@
     const LOCATION_ENTRY = "entry.1456594784";
 
     // 可寫死，也可加入輸入欄位
-    // const employeeName = "張三";
+    const employeeName = "張三";
     const punchType = "上班"; // 或 "下班"
 
     function sendForm(lat, lng) {
       const formData = new FormData();
-      // formData.append(NAME_ENTRY, employeeName);
+      formData.append(NAME_ENTRY, employeeName);
       formData.append(TYPE_ENTRY, punchType);
       formData.append(LOCATION_ENTRY, `${lat},${lng}`);
 
